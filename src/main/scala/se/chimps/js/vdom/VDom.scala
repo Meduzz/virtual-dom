@@ -8,7 +8,6 @@ import se.chimps.js.vdom.util.Selectorify
 
 trait VDom {
 
-	// TODO figure out a way to test this with a test framework.
 	def renderTag:PartialFunction[Tag, Node] = {
 		case t:RealTag => {
 			val element = dom.document.createElement(t.tag)
@@ -28,7 +27,7 @@ trait VDom {
 	private def applyAttributes(elem:Element, attr:Seq[Attribute]):Unit = {
 		attr.foreach({
 			case AttributePair(key, value) => elem.setAttribute(key, value)
-			case Listener(key, func) => elem.addEventListener(key, func)
+			case l:Listener[_] => elem.addEventListener(l.key, l.func)
 		})
 	}
 

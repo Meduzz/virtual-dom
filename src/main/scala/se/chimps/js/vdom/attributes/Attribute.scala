@@ -7,7 +7,7 @@ trait Attribute extends Item {
 	def key:String
 
 	def eventHandler:Boolean = this match {
-		case l:Listener => true
+		case l:Listener[_] => true
 		case _ => false
 	}
 }
@@ -18,4 +18,4 @@ object Attribute {
 }
 
 case class AttributePair(key:String, value:String) extends Attribute
-case class Listener(key:String, func:Function1[Event, Unit]) extends Attribute
+case class Listener[T <: Event](key:String, func:Function1[T, Unit]) extends Attribute

@@ -1,8 +1,8 @@
 package se.chimps.js.vdom.hypertext
 
 import org.scalatest.FunSuite
-import se.chimps.js.vdom.{RealTag, TextTag}
 import se.chimps.js.vdom.attributes.AttributePair
+import se.chimps.js.vdom.{RealTag, TextTag}
 
 class HFuncTest extends FunSuite with HFunc {
 
@@ -140,6 +140,21 @@ class HFuncTest extends FunSuite with HFunc {
 		val realTextTag = textTag.asInstanceOf[TextTag]
 
 		assert(realTextTag.text == "Spam")
+	}
+
+	test("can you hear the events firing?") {
+		import Explicits._
+		import se.chimps.js.vdom.attributes.Attributes.click
+
+		val tag = "a.btn".h(click := (e => println(e)), text("Click"))
+
+		assert(tag.isInstanceOf[RealTag])
+
+		val realTag = tag.asInstanceOf[RealTag]
+		assert(realTag.attr.size == 2)
+		assert(realTag.children.size == 1)
+
+		assert(realTag.attr(1).eventHandler)
 	}
 
 }

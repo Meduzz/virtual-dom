@@ -1,7 +1,7 @@
 package se.chimps.js.vdom.attributes
 
-import org.scalajs.dom.Event
+import org.scalajs.dom.raw.Event
 
-trait EventHandler {
-	def :=(func:Function1[Event, Unit]):Attribute
+trait EventHandler[T <: Event] {
+	def :=(func:Function1[T, Unit]):Attribute
 }

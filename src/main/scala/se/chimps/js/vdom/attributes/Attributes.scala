@@ -1,6 +1,7 @@
 package se.chimps.js.vdom.attributes
 
-import se.chimps.js.vdom.util.{PropertyBuilder, ListenerBuilder}
+import org.scalajs.dom.raw.{Event, FocusEvent, MouseEvent}
+import se.chimps.js.vdom.util.{ListenerBuilder, PropertyBuilder}
 
 object Attributes {
 	def href = PropertyBuilder("href")
@@ -35,8 +36,8 @@ object Attributes {
 	def step = PropertyBuilder("step")
 	def target = PropertyBuilder("target")
 	def slot = PropertyBuilder("slot")
-	def click = ListenerBuilder("click")
-	def input = ListenerBuilder("input")
-	def blur = ListenerBuilder("blur")
-	def change = ListenerBuilder("change")
+	def click = ListenerBuilder[MouseEvent]("click")
+	def input = ListenerBuilder[Event]("input")
+	def blur = ListenerBuilder[FocusEvent]("blur")
+	def change = ListenerBuilder[Event]("change")
 }
