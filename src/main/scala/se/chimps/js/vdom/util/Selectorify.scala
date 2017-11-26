@@ -11,6 +11,8 @@ class Selectorify(val any:Tag) {
 			tags = Seq(t.parent) ++ tags
 			t = t.parent
 		}
+		tags = Seq(t) ++ tags
+
 		tags.tail.map(t => createSelector(t)).foldLeft("")((a,b) => {
 			if (b.startsWith(":")) {
 				a + b

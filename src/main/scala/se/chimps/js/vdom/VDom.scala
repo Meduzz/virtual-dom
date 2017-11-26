@@ -39,7 +39,13 @@ trait VDom {
 				if (selector.isEmpty) {
 					node.appendChild(renderTag(ny))
 				} else {
-					node.asInstanceOf[Element].querySelector(selector).appendChild(renderTag(ny))
+					val c = node.asInstanceOf[Element].querySelector(selector)
+
+					if (c == null) {
+						println(s"Selector ($selector) returned nothing!")
+					} else {
+						c.appendChild(renderTag(ny))
+					}
 				}
 			}
 			case ReplaceNode(old, ny) => {
@@ -55,7 +61,11 @@ trait VDom {
 				} else {
 					val ersatt = renderTag(ny)
 					val tag = node.asInstanceOf[Element].querySelector(selector)
-					tag.parentNode.replaceChild(ersatt, tag)
+					if (tag == null) {
+						println(s"Selector ($selector) returned nothing!")
+					} else {
+						tag.parentNode.replaceChild(ersatt, tag)
+					}
 				}
 			}
 			case ReplaceText(tag, text) => {
@@ -64,7 +74,12 @@ trait VDom {
 				if (selector.isEmpty) {
 					node.textContent = text
 				} else {
-					node.asInstanceOf[Element].querySelector(selector).textContent = text
+					val c = node.asInstanceOf[Element].querySelector(selector)
+					if (c == null) {
+						println(s"Selector ($selector) returned nothing!")
+					} else {
+						c.textContent = text
+					}
 				}
 			}
 			case EmptyTag(tag) => {
@@ -76,12 +91,16 @@ trait VDom {
 					node.asInstanceOf[Element].querySelector(selector)
 				}
 
-				val children = target.childNodes
-				while (children.length > 0) {
-					target.removeChild(children(0))
-				}
+				if (target == null) {
+					println(s"Selector ($selector) returned nothing!")
+				} else {
+					val children = target.childNodes
+					while (children.length > 0) {
+						target.removeChild(children(0))
+					}
 
-				target.textContent = ""
+					target.textContent = ""
+				}
 			}
 		})
 	}

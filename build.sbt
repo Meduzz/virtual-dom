@@ -2,7 +2,7 @@ enablePlugins(ScalaJSPlugin)
 
 name := "IcanHazDOM"
 
-version := "20171125"
+version := "20171126"
 
 scalaVersion := "2.12.3"
 

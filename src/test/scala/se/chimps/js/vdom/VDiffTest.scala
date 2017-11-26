@@ -1,6 +1,7 @@
 package se.chimps.js.vdom
 
 import org.scalatest.FunSuite
+import se.chimps.js.vdom.attributes.AttributePair
 import se.chimps.js.vdom.hypertext.Explicits
 
 class VDiffTest extends FunSuite with VDiff {
@@ -126,5 +127,34 @@ class VDiffTest extends FunSuite with VDiff {
 		val newTag = replaceNode.tag.asInstanceOf[RealTag]
 
 		assert(newTag.tag == "span")
+	}
+
+	test("changes among siblings") {
+		import Explicits._
+
+		val tag1 = "ul".h(
+			"li.active".text("one"),
+			"li".text("two"),
+			"li".text("three")
+		)
+
+		val tag2 = "ul".h(
+			"li".text("one"),
+			"li".text("two"),
+			"li.active".text("three")
+		)
+
+		val d = diff(tag1, tag2)
+
+		assert(d.size == 2)
+		val d1 = d(0).asInstanceOf[ReplaceNode]
+		val d2 = d(1).asInstanceOf[ReplaceNode]
+
+		// verify that oldTag has class=active and that tag has no attr.
+		assert(d1.oldTag.asInstanceOf[RealTag].attr.filter(_.key == "class").head.asInstanceOf[AttributePair].value == "active")
+		assert(d1.tag.asInstanceOf[RealTag].attr.isEmpty)
+		// verify that tag has class=active and that old has no attr.
+		assert(d2.tag.asInstanceOf[RealTag].attr.filter(_.key == "class").head.asInstanceOf[AttributePair].value == "active")
+		assert(d2.oldTag.asInstanceOf[RealTag].attr.isEmpty)
 	}
 }
